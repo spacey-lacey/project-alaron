@@ -53,7 +53,7 @@ typedef enum rsp_opcode {
 ```
 This fixes a "duplicate symbol" compiler error caused by `opcode_t` being defined in a header file.
 
-6. Open `tools/build-posix64-toolchain.sh`.  Add these arguments to the GCC configure command, `../gcc-source/configure` (it already has a ton of arguments):
+6. Open `tools/build-posix64-toolchain.sh`.  Add these arguments to the GCC configure command, `../gcc-source/configure` (it already has a ton of arguments; don't forget to put a \ after the first one!):
 ```
 --with-gmp=$(brew --prefix gmp) \
 --with-mpfr=$(brew --prefix mpfr) \
@@ -69,4 +69,23 @@ It will take a long time and download a number of files along the way.
 
 8. Pray to the holy spirit of Steve Jobs.
 
-9. If any part of the build fails, consider starting over.  The stamps don't always seem to work as intended, and may end up trying to run something from the wrong directory.
+9. If any part of the build fails, consider starting over.  The stamps don't always seem to work as intended, and the script may end up trying to run something from the wrong directory.
+
+I decided to go nuclear and just delete everything in the `tools` subdirectory.  If you do this, I recommend saving a copy of the build script (so you don't have to edit it again) and the files you've already downloaded.  From the base `n64chain` directory:
+```
+mv tools/build-posix64-toolchain.sh .
+mv tools/tarballs .
+```
+Depending on which files are in `tarballs`, set the stamps:
+```
+mkdir stamps
+touch stamps/binutils-download stamps/gcc-download stamps/make-download
+```
+Then you can do a very gross """make clean""" and replace the files:
+```
+rm -rf tools/*
+git checkout tools/*
+cp build-posix64-toolchain.sh tools/.
+cp -r tarballs tools/.
+cp -r stamps tools/.
+```
