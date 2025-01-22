@@ -1,0 +1,6 @@
+[submodule "build/n64chain"]
+	path = build/n64chain
+	url = https://github.com/tj90241/n64chain.git
+[submodule "build/boot_stub"]
+	path = build/boot_stub
+	url = https://github.com/hcs64/boot_stub.git
